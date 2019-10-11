@@ -1,0 +1,135 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Oct 11 16:49:18 2019
+as
+@author: auri
+"""
+import numpy as np
+import time
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import math
+import time 
+import os
+# os.chdir('/Users/mini/Documents/Circulación/Atmósfera')
+import xarray as xr
+from netCDF4 import Dataset 
+import cartopy.feature
+from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+import cartopy.crs as ccrs
+from mapa import mapa
+from DerY import derivy 
+
+#%%
+dir = '/home/auri/Facultad/Materias/Circulacion/TP5/Simulaciones/' # Luchi
+dS = xr.open_dataset(dir+'EB1P1_concatenado.nc', decode_times=False) #Abro el NetCdf
+print(dS)
+
+forzante = dS['fr'].values
+u=dS['ucomp'].values
+v=dS['vcomp'].values
+forzante = dS['fr'].values
+vort=dS['vor'].values
+psi = dS['stream'].values
+
+lat=dS['lat'].values
+lon=dS['lon'].values
+
+
+# correccion a estado basico
+# promedio zonal del estados basico en tiempo 50 (49)
+from numpy import empty
+psi_prom = empty([128])
+for i in range(0,127):
+    psi_prom[i] = np.mean(psi[49,i,:])
+    
+
+#promedio temporal del perturbado 50-59
+
+i=0
+psi_pert_temp = np.empty_like(psi[1,:,:])
+for i in np.arange(0,np.size(lat)):
+    for j in np.arange(0,np.size(lon)):
+        psi_pert_temp[i,j] = np.mean(psi[50:59,i,j])
+        
+# promedio zonal de lo anterior
+i = 0        
+psi_pert_prom = empty([128])
+for i in np.arange(0,np.size(lat)):
+    psi_pert_prom[i] = np.mean(psi_pert_temp[i,:]) 
+
+psi_c = np.empty_like(psi[1,:,:])
+for i in np.arange(0,np.size(lat)):   
+    for j in  np.arange(0,np.size(lon)):
+        psi_c[i,j] = psi[49,i,j]-psi_prom[i]+psi_pert_prom[i]
+        
+# anomalia
+# dia 2 de pert (51)
+        
+anomalia_psi_dia2 = psi_c - psi[51,:,:]
+
+
+VAR = anomalia_psi_dia2 #es la vorticidad relativa
+cmin = -4350000
+cmax =  5080000
+ncont = 15
+clevs = np.linspace(cmin, cmax, ncont)
+LONMIN= 0
+LONMAX= 359
+LATMIN= -88
+LATMAX= 88
+L = [LONMIN, LONMAX, LATMIN, LATMAX]
+cmap = 'rainbow'
+nombre_titulo = 'Estado basico 1 perturbacion 1 Anomalia de $\Psi$ dia 2'
+nombre_archivo = 'EB1P1_psi_dia2_global'
+
+
+fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
+
+# anomalia psi dia 4
+
+anomalia_psi_dia4 = psi_c - psi[53,:,:]
+
+
+VAR = anomalia_psi_dia4 #es la vorticidad relativa
+cmin = -4350000
+cmax =  5080000
+ncont = 15
+clevs = np.linspace(cmin, cmax, ncont)
+LONMIN= 0
+LONMAX= 359
+LATMIN= -88
+LATMAX= 88
+L = [LONMIN, LONMAX, LATMIN, LATMAX]
+cmap = 'rainbow'
+nombre_titulo = 'Estado basico 1 perturbacion 1 Anomalia de $\Psi$ dia 4'
+nombre_archivo = 'EB1P1_psi_dia4_global'
+
+
+fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
+
+
+#anomalia 8
+
+
+anomalia_psi_dia8 = psi_c - psi[57,:,:]
+
+
+VAR = anomalia_psi_dia8 #es la vorticidad relativa
+cmin = -4350000
+cmax =  5080000
+ncont = 15
+clevs = np.linspace(cmin, cmax, ncont)
+LONMIN= 0
+LONMAX= 359
+LATMIN= -88
+LATMAX= 88
+L = [LONMIN, LONMAX, LATMIN, LATMAX]
+cmap = 'rainbow'
+nombre_titulo = 'Estado basico 1 perturbacion 1 Anomalia de $\Psi$ dia 8'
+nombre_archivo = 'EB1P1_psi_dia8_global'
+
+
+fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
+
