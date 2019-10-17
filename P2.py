@@ -26,8 +26,8 @@ from Estado_basico import Estado_basico
 from mapa2 import mapa2
 from hovmoller import hovmoller
 
-
-# Estado basico 1 pert1
+#%%
+# Estado basico 1 pert1 EB1P1
 dir = '/home/auri/Facultad/Materias/Circulacion/TP5/Simulaciones/' # Luchi
 dS = xr.open_dataset(dir+'EB1P1_concatenado.nc', decode_times=False) #Abro el NetCdf
 print(dS)
@@ -50,13 +50,14 @@ LATMAX= 88
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
 cmap = 'rainbow'
 
-
- 
+# usando funcion "estado_basico" 
+# ya calcula el estado basico (la correccion) 
 psi_c = Estado_basico(psi, lat, lon)
+#%%
 
 # anomalia
+
 # dia 2 de pert (51)
-        
 anomalia_psi_dia2 = psi_c - psi[51,:,:]
 
 
@@ -102,9 +103,12 @@ nombre_archivo = 'EB1P1_psi_dia8_global'
 
 fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
+
+
 # en el cuadro 90S-10N y 60E-180O 
 # 90S es primera fila de las matrices, 10N es fila 71
 #60E es fila 43, 180O es 128 columna
+
 lat2 = lat[0:71]
 lon2 = lon[43:128]
 LONMIN= 60
@@ -114,8 +118,6 @@ LATMAX= 10
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
 anomalia_psi_dia2 = psi_c - psi[51,:,:]
 
-
-
 VAR = anomalia_psi_dia2[0:71,43:128] 
 cmin = -4350000
 cmax =  5080000
@@ -123,6 +125,8 @@ ncont = 15
 clevs = np.linspace(cmin, cmax, ncont)
 nombre_titulo = 'Estado basico 1 perturbacion 1 Anomalia de $\Psi$ dia 2'
 nombre_archivo = 'EB1P1_psi_dia2_cuadradito'
+
+# usando funcion mapa2, q grafica en la zona pedida
 
 fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
@@ -145,35 +149,13 @@ nombre_titulo = 'Estado basico 1 perturbacion 1 Anomalia de $\Psi$ dia 8'
 nombre_archivo = 'EB1P1_psi_dia8_cuadradito'
 
 fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
+#%%
+
 
 # Hovmoller
 # zonal
 # solo los dias de la perturbacion 50-59
-anomalia_10dias = empty([10,128,256]) 
-for i in np.arange(0,10):
-    anomalia_10dias[i,:,:]=psi_c - psi[49+i,:,:]
-dias = np.arange(1,11)
 
-plt.figure()
-plt.contourf(lon[58:256],dias, anomalia_10dias[:,43,58:256], cmap = 'viridis') 
-plt.colorbar()
-plt.contour(lon[58:256],dias, anomalia_10dias[:,43,58:256], levels = 0, colors = "w" )
-plt.axvline(220, color = "r")
-plt.xlabel('longitud')
-plt.ylabel('Dias')
-plt.title("Hovmoller zonal $\Psi$ Estado Basico 1 Perturbacion 1") 
-plt.axvline(x = 220,ymin = 0, ymax = 10 , color = "r")
-plt.savefig("Hovmoller",dpi = 200)
-
-plt.figure()
-plt.contourf(lat[0:86], dias, anomalia_10dias[:,0:86,220], cmap = 'viridis') 
-plt.colorbar()
-plt.contour(lat[0:86], dias, anomalia_10dias[:,0:86,220], levels = 0, colors = "w" )
-plt.axvline(-28, color = "r")
-plt.xlabel('longitud')
-plt.ylabel('Dias')
-plt.title("Hovmoller meridional $\Psi$ Estado Basico 1 Perturbacion 1") 
-plt.savefig("Hovmoller",dpi = 200)
-
+# usando la funcion hovmoller. # ya selecciona los dias,, grafica y guarda los graficos
 
 hovmoller(psi_c, psi, lon, lat, "1", "1", "EB1P1")
