@@ -3,7 +3,7 @@
 """
 Created on Fri Oct 11 16:49:18 2019
 as
-@author: auri
+@author:   auri
 """
 import numpy as np
 import time
