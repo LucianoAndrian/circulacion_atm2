@@ -24,7 +24,7 @@ def mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo):
     clevs = np.linspace(cmin, cmax, ncont)
     
     #Creamos figura
-    fig=plt.figure(figsize=(6,4),dpi=200)
+    fig=plt.figure(figsize=(4,3),dpi=200)
     
     #Definimos proyección
     ax = plt.axes(projection=ccrs.PlateCarree(central_longitude=180))
@@ -35,8 +35,8 @@ def mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo):
     im=ax.contourf(lons, lats, VAR, clevs, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
     ax.contour(lons, lats, VAR, levels = 0, colors = "w", xtend='both', transform=crs_latlon)
     #Agregamos barra de colores
-    plt.colorbar(im, fraction=0.052, pad=0.04, shrink=0.8, aspect=8)
-    
+    cb = plt.colorbar(im, fraction=0.052, pad=0.04, shrink=0.8, aspect=8)
+    cb.ax.tick_params(labelsize=6)
     #Características del mapa
     ax.add_feature(cartopy.feature.LAND, facecolor='#d9d9d9')
     ax.add_feature(cartopy.feature.COASTLINE)
@@ -48,11 +48,12 @@ def mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo):
     lat_formatter = LatitudeFormatter()
     ax.xaxis.set_major_formatter(lon_formatter)
     ax.yaxis.set_major_formatter(lat_formatter)
+    ax.tick_params(labelsize=6)
     
     #Características del mapa
     
     #Titulo
-    plt.title(nombre_titulo, fontsize=8, y=0.98, loc="center")
+    plt.title(nombre_titulo, fontsize=6, y=0.98, loc="center")
     
     #Guardar figura
     plt.savefig(nombre_archivo + '.jpg')
