@@ -12,7 +12,7 @@ import matplotlib.animation as animation
 import math
 import time 
 import os
-# os.chdir('/Users/mini/Documents/Circulación/Atmósfera')
+# os.chdir('/Users/mini/Documents/Circulación/Atmósfera')
 import xarray as xr
 from netCDF4 import Dataset 
 import cartopy.feature
@@ -27,7 +27,7 @@ from mapa2 import mapa2
 from hovmoller_pert1 import hovmoller1
 from hovmoller_pert2 import hovmoller2
 
-dir = '/home/auri/Facultad/Materias/Circulacion/TP5/Simulaciones/' # Luchi
+dir = '/Users/mini/Documents/Circulación/Atmósfera/P2/' # Mili
 
 #%%
 ###############
@@ -54,9 +54,9 @@ LONMAX= 359
 LATMIN= -88
 LATMAX= 88
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
-cmap = 'rainbow'
+cmap = 'RdBu_r'
 
-# usando funcion "estado_basico" 
+# usando funcion "Estado_basico" 
 # ya calcula el estado basico (la correccion) 
 psi_c = Estado_basico(psi, lat, lon)
 
@@ -67,7 +67,7 @@ psi_c = Estado_basico(psi, lat, lon)
 # dia 2 de pert (51)
 anomalia_psi_dia2 = psi[51,:,:] - psi_c
 
-VAR = anomalia_psi_dia2 #es la vorticidad relativa
+VAR = anomalia_psi_dia2 
 cmin = -5080000
 cmax = 4350000
 ncont = 15
@@ -87,7 +87,7 @@ cmin = -5080000
 cmax = 4350000
 ncont = 15
 clevs = np.linspace(cmin, cmax, ncont)
-cmap = 'rainbow'
+cmap = 'RdBu_r'
 nombre_titulo = 'Estado basico 1 perturbacion 1 Anomalia de $\Psi$ dia 4'
 nombre_archivo = 'EB1P1_psi_dia4_global'
 
@@ -99,32 +99,33 @@ fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
 anomalia_psi_dia8 = psi[57,:,:] - psi_c
 
 VAR = anomalia_psi_dia8 #es la vorticidad relativa
-cmin = -5080000
-cmax = 4350000
-ncont = 15
+cmin = -5000000 # -5080000
+cmax = 5000000 #4350000
+ncont = 18
 clevs = np.linspace(cmin, cmax, ncont)
-cmap = 'rainbow'
+cmap = 'RdBu_r'
 nombre_titulo = 'Estado basico 1 perturbacion 1 Anomalia de $\Psi$ dia 8'
 nombre_archivo = 'EB1P1_psi_dia8_global'
 
 fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
 ###############################################################################
+# Queremos graficar las anomalías en un dominio más pequeño
 
 # en el cuadro 90S-10N y 60E-180O 
 # 90S es primera fila de las matrices, 10N es fila 71
 #60E es fila 43, 180O es 128 columna
 
 lat2 = lat[0:71]
-lon2 = lon[43:128]
-LONMIN= 60
-LONMAX= 180
+lon2 = lon[120:255]
+LONMIN= 230
+LONMAX= 360
 LATMIN= -88
 LATMAX= 10
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
 
 
-VAR = anomalia_psi_dia2[0:71,43:128] 
+VAR = anomalia_psi_dia2[0:71,120:255] 
 cmin = -5080000
 cmax = 4350000
 ncont = 15
@@ -132,12 +133,12 @@ clevs = np.linspace(cmin, cmax, ncont)
 nombre_titulo = 'Estado basico 1 perturbacion 1 Anomalia de $\Psi$ dia 2'
 nombre_archivo = 'EB1P1_psi_dia2_cuadradito'
 
-# usando funcion mapa2, q grafica en la zona pedida
+# usando funcion mapa2, que grafica en la zona pedida
 fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
 ###############################################################################
 
-VAR = anomalia_psi_dia4[0:71,43:128] 
+VAR = anomalia_psi_dia4[0:71,120:255] 
 cmin = -5080000
 cmax = 4350000
 ncont = 15
@@ -149,7 +150,7 @@ fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
 ###############################################################################
 
-VAR = anomalia_psi_dia8[0:71,43:128] 
+VAR = anomalia_psi_dia8[0:71,120:255] 
 cmin = -5080000
 cmax = 4350000
 ncont = 15
@@ -207,7 +208,7 @@ LONMAX= 359
 LATMIN= -88
 LATMAX= 88
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
-cmap = 'rainbow'
+cmap = 'RdBu_r'
 
 
 psi_c = Estado_basico(psi, lat, lon)  # estado basico
@@ -221,7 +222,7 @@ psi_c = Estado_basico(psi, lat, lon)  # estado basico
 # dia 2 de pert (51)
 anomalia_psi_dia2 = psi[51,:,:] - psi_c
 
-VAR = anomalia_psi_dia2 #es la vorticidad relativa
+VAR = anomalia_psi_dia2 
 cmin = -5080000
 cmax = 4350000
 ncont = 15
@@ -241,7 +242,7 @@ cmin = -5080000
 cmax = 4350000
 ncont = 15
 clevs = np.linspace(cmin, cmax, ncont)
-cmap = 'rainbow'
+cmap = 'RdBu_r'
 nombre_titulo = 'Estado basico 2 perturbacion 1 Anomalia de $\Psi$ dia 4'
 nombre_archivo = 'EB2P1_psi_dia4_global'
 
@@ -257,7 +258,7 @@ cmin = -5080000
 cmax = 4350000
 ncont = 15
 clevs = np.linspace(cmin, cmax, ncont)
-cmap = 'rainbow'
+cmap = 'RdBu_r'
 nombre_titulo = 'Estado basico 2 perturbacion 1 Anomalia de $\Psi$ dia 8'
 nombre_archivo = 'EB2P1_psi_dia8_global'
 
@@ -270,15 +271,15 @@ fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
 #60E es fila 43, 180O es 128 columna
 
 lat2 = lat[0:71]
-lon2 = lon[43:128]
-LONMIN= 60
-LONMAX= 180
+lon2 = lon[120:255]
+LONMAX= 230
+LONMAX= 360
 LATMIN= -88
 LATMAX= 10
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
 
 
-VAR = anomalia_psi_dia2[0:71,43:128] 
+VAR = anomalia_psi_dia2[0:71,120:255] 
 cmin = -5080000
 cmax = 4350000
 ncont = 15
@@ -290,7 +291,7 @@ fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
 ###############################################################################
 
-VAR = anomalia_psi_dia4[0:71,43:128] 
+VAR = anomalia_psi_dia4[0:71,120:255] 
 cmin = -5080000
 cmax = 4350000
 ncont = 15
@@ -302,7 +303,7 @@ fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
 ###############################################################################
 
-VAR = anomalia_psi_dia8[0:71,43:128] 
+VAR = anomalia_psi_dia8[0:71,120:255] 
 cmin = -5080000
 cmax = 4350000
 ncont = 15
@@ -340,7 +341,7 @@ LONMAX= 359
 LATMIN= -88
 LATMAX= 88
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
-cmap = 'rainbow'
+cmap = 'RdBu_r'
 
 psi_c = Estado_basico(psi, lat, lon)  # estado basico
 
@@ -372,7 +373,7 @@ cmin = -5080000
 cmax = 4350000
 ncont = 15
 clevs = np.linspace(cmin, cmax, ncont)
-cmap = 'rainbow'
+cmap = 'RdBu_r'
 nombre_titulo = 'Estado basico 2 perturbacion 2 Anomalia de $\Psi$ dia 4'
 nombre_archivo = 'EB2P2_psi_dia4_global'
 
@@ -388,7 +389,7 @@ cmin = -5080000
 cmax = 4350000
 ncont = 15
 clevs = np.linspace(cmin, cmax, ncont)
-cmap = 'rainbow'
+cmap = 'RdBu_r'
 nombre_titulo = 'Estado basico 2 perturbacion 2 Anomalia de $\Psi$ dia 8'
 nombre_archivo = 'EB2P2_psi_dia8_global'
 
@@ -401,15 +402,15 @@ fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
 #60E es fila 43, 180O es 128 columna
 
 lat2 = lat[0:71]
-lon2 = lon[43:128]
-LONMIN= 60
-LONMAX= 180
+lon2 = lon[120:255]
+LONMAX= 230
+LONMAX= 360
 LATMIN= -88
 LATMAX= 10
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
-anomalia_psi_dia2 = psi_c - psi[51,:,:]
+anomalia_psi_dia2 = psi[51,:,:] - psi_c
 
-VAR = anomalia_psi_dia2[0:71,43:128] 
+VAR = anomalia_psi_dia2[0:71,120:255] 
 cmin = -5080000
 cmax = 4350000
 ncont = 15
@@ -423,7 +424,7 @@ fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
 ###############################################################################
 
-VAR = anomalia_psi_dia4[0:71,43:128] 
+VAR = anomalia_psi_dia4[0:71,120:255] 
 cmin = -5080000
 cmax = 4350000
 ncont = 15
@@ -435,7 +436,7 @@ fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
 ###############################################################################
 
-VAR = anomalia_psi_dia8[0:71,43:128] 
+VAR = anomalia_psi_dia8[0:71,120:255] 
 cmin = -5080000
 cmax = 4350000
 ncont = 15
