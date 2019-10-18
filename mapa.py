@@ -49,6 +49,7 @@ def mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo):
     ax.xaxis.set_major_formatter(lon_formatter)
     ax.yaxis.set_major_formatter(lat_formatter)
     ax.tick_params(labelsize=6)
+    plt.tight_layout()
     
     #Características del mapa
     
