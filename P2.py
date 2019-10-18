@@ -4,6 +4,10 @@
 Created on Fri Oct 11 16:49:18 2019
 as
 @author:   auri
+
+Mili: achique unas 300 lineas, usando for.
+esta hecho el item 2b, con un for medio raro pero anda jajaja
+solo falta la velocidad de fase y grupo
 """
 import numpy as np
 import time
