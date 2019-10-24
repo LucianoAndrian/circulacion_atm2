@@ -37,6 +37,7 @@ def mapa2(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo):
     #Agregamos barra de colores
     cb = plt.colorbar(im, fraction=0.052, pad=0.04, shrink=0.8, aspect=8)
     cb.ax.tick_params(labelsize=6)
+    cb.set_label('$x10^{5}$', labelpad = -29, y=1.14, rotation=0,fontsize=6)
     #Características del mapa
     ax.add_feature(cartopy.feature.LAND, facecolor='#d9d9d9')
     ax.add_feature(cartopy.feature.COASTLINE)

@@ -31,7 +31,8 @@ from mapa2 import mapa2
 from hovmoller_pert1 import hovmoller1
 from hovmoller_pert2 import hovmoller2
 
-dir = '/home/auri/Facultad/Materias/Circulacion/TP5/Simulaciones/' # Luchi
+#dir = '/home/auri/Facultad/Materias/Circulacion/TP5/Simulaciones/' # Luchi
+dir = '/Users/mini/Documents/Circulación/Atmósfera/P2/' # Mili
 
 #%%
 ###############
@@ -65,17 +66,17 @@ anomalia_psi_dia8_eb1p1 = psi[57,:,:] - psi_c
 
 anomalia_psi_EB1P1 = (anomalia_psi_dia2_eb1p1, anomalia_psi_dia4_eb1p1, anomalia_psi_dia8_eb1p1)
 
-cmin = -5000000
-cmax = 5000000
+cmin = -50
+cmax = 50
 ncont = 25
 clevs = np.linspace(cmin, cmax, ncont)
 
-dia = ("1" , "2", "3")
+dia = ("2" , "4", "8")
 num = (0, 1, 2)
 
 for i in num:
     VAR = anomalia_psi_EB1P1[i]
-    nombre_titulo = 'Estado basico 1 perturbacion 1 Anomalia de $\Psi$ dia ' + dia[i]
+    nombre_titulo = 'EB1 P1 Anomalía de $\Psi$ día ' + dia[i]
     nombre_archivo = "EB1P1_psi_dia" + dia[i] + "_global"
     fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
     
@@ -90,8 +91,8 @@ LONMAX= 360
 LATMIN= -88
 LATMAX= 10
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
-cmin = -5000000
-cmax = 5000000
+cmin = -50
+cmax = 50
 ncont = 25
 clevs = np.linspace(cmin, cmax, ncont)
 
@@ -99,7 +100,7 @@ anomalia_psi_EB1P1_C = (anomalia_psi_dia2_eb1p1[0:71,120:255], anomalia_psi_dia4
 
 for i in num:
     VAR =  anomalia_psi_EB1P1_C[i]
-    nombre_titulo = 'Estado basico 1 perturbacion 1 Anomalia de $\Psi$ dia ' + dia[i]
+    nombre_titulo = 'EB1 P1 Anomalía de $\Psi$ día ' + dia[i]
     nombre_archivo = "EB1P1_psi_dia" + dia[i] + "_cuadrante"
     fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
@@ -138,17 +139,17 @@ anomalia_psi_dia8_eb1p2 = psi[57,:,:] - psi_c
 
 anomalia_psi_EB1P2 = (anomalia_psi_dia2_eb1p2, anomalia_psi_dia4_eb1p2, anomalia_psi_dia8_eb1p2)
 
-cmin = -5000000
-cmax = 5000000
+cmin = -50
+cmax = 50
 ncont = 25
 clevs = np.linspace(cmin, cmax, ncont)
 
-dia = ("1" , "2", "3")
+dia = (2" , "4", "8")
 num = (0, 1, 2)
 
 for i in num:
     VAR = anomalia_psi_EB1P2[i]
-    nombre_titulo = 'Estado basico 1 perturbacion 2 Anomalia de $\Psi$ dia ' + dia[i]
+    nombre_titulo = 'EB1 P2 Anomalía de $\Psi$ día ' + dia[i]
     nombre_archivo = "EB1P2_psi_dia" + dia[i] + "_global"
     fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
    
@@ -161,8 +162,8 @@ LONMAX= 360
 LATMIN= -88
 LATMAX= 10
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
-cmin = -5000000
-cmax = 5000000
+cmin = -50
+cmax = 50
 ncont = 25
 clevs = np.linspace(cmin, cmax, ncont)
 
@@ -170,7 +171,7 @@ anomalia_psi_EB1P2_C = (anomalia_psi_dia2_eb1p2[0:71,120:255], anomalia_psi_dia4
 
 for i in num:
     VAR =  anomalia_psi_EB1P2_C[i]
-    nombre_titulo = 'Estado basico 1 perturbacion 2 Anomalia de $\Psi$ dia ' + dia[i]
+    nombre_titulo = 'EB1 P2 Anomalía de $\Psi$ día ' + dia[i]
     nombre_archivo = "EB1P2_psi_dia" + dia[i] + "_cuadrante"
     fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
@@ -212,17 +213,17 @@ anomalia_psi_dia8_eb2p1 = psi[57,:,:] - psi_c
 anomalia_psi_EB2P1 = (anomalia_psi_dia2_eb2p1, anomalia_psi_dia4_eb2p1, anomalia_psi_dia8_eb2p1)
 
 
-cmin = -5000000
-cmax = 5000000
+cmin = -50
+cmax = 50
 ncont = 25
 clevs = np.linspace(cmin, cmax, ncont)
 
-dia = ("1" , "2", "3")
+dia = (2" , "4", "8")
 num = (0, 1, 2)
 
 for i in num:
     VAR = anomalia_psi_EB2P1[i]
-    nombre_titulo = 'Estado basico 2 perturbacion 1 Anomalia de $\Psi$ dia ' + dia[i]
+    nombre_titulo = 'EB2 P1 Anomalía de $\Psi$ día ' + dia[i]
     nombre_archivo = "EB2P1_psi_dia" + dia[i] + "_global"
     fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
     
@@ -237,8 +238,8 @@ LONMAX= 360
 LATMIN= -88
 LATMAX= 10
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
-cmin = -5000000
-cmax = 5000000
+cmin = -50
+cmax = 50
 ncont = 25
 clevs = np.linspace(cmin, cmax, ncont)
 
@@ -246,7 +247,7 @@ anomalia_psi_EB2P1_C = (anomalia_psi_dia2_eb2p1[0:71,120:255], anomalia_psi_dia4
 
 for i in num:
     VAR =  anomalia_psi_EB2P1_C[i]
-    nombre_titulo = 'Estado basico 2 perturbacion 1 Anomalia de $\Psi$ dia ' + dia[i]
+    nombre_titulo = 'EB 2 P1 Anomalía de $\Psi$ día ' + dia[i]
     nombre_archivo = "EB2P1_psi_dia" + dia[i] + "_cuadrante"
     fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
@@ -284,17 +285,17 @@ anomalia_psi_dia8_eb2p2 = psi[57,:,:] - psi_c
 
 anomalia_psi_EB2P2  = (anomalia_psi_dia2_eb2p2, anomalia_psi_dia4_eb2p2, anomalia_psi_dia8_eb2p2)
 
-cmin = -5000000
-cmax = 5000000
+cmin = -50
+cmax = 50
 ncont = 25
 clevs = np.linspace(cmin, cmax, ncont)
 
-dia = ("1" , "2", "3")
+dia = (2" , "4", "8")
 num = (0, 1, 2)
 
 for i in num:
     VAR = anomalia_psi_EB2P2[i]
-    nombre_titulo = 'Estado basico 2 perturbacion 2 Anomalia de $\Psi$ dia ' + dia[i]
+    nombre_titulo = 'EB1 P1 Anomalía de $\Psi$ día ' + dia[i]
     nombre_archivo = "EB2P2_psi_dia" + dia[i] + "_global"
     fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
     
@@ -308,8 +309,8 @@ LONMAX= 360
 LATMIN= -88
 LATMAX= 10
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
-cmin = -5000000
-cmax = 5000000
+cmin = -50
+cmax = 50
 ncont = 25
 clevs = np.linspace(cmin, cmax, ncont)
 
@@ -317,7 +318,7 @@ anomalia_psi_EB2P2_C = (anomalia_psi_dia2_eb2p2[0:71,120:255], anomalia_psi_dia4
 
 for i in num:
     VAR =  anomalia_psi_EB2P2_C[i]
-    nombre_titulo = 'Estado basico 2 perturbacion 2 Anomalia de $\Psi$ dia ' + dia[i]
+    nombre_titulo = 'EB2 P2 Anomalía de $\Psi$ día ' + dia[i]
     nombre_archivo = "EB2P2_psi_dia" + dia[i] + "_cuadrante"
     fig = mapa2(cmin,cmax,ncont,lat2,lon2,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
@@ -338,11 +339,11 @@ num = (0, 1, 2)
 for i in num:
     i = i + i
     VAR = anomalias_p1[i] - anomalias_p1[i+1]
-    cmin = -1300000
-    cmax = 1300000
+    cmin = -13
+    cmax = 13
     ncont = 25
     clevs = np.linspace(cmin, cmax, ncont)
-    nombre_titulo = "Diferencia anomalia 1 Dia" + titulo[i]
+    nombre_titulo = "Diferencia anomalía 1 Día" + titulo[i]
     nombre_archivo = "dif_P1_dia" + archivo[i]
     fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
 
@@ -355,11 +356,10 @@ anomalias_p2 = (anomalia_psi_dia2_eb1p2, anomalia_psi_dia2_eb2p2, anomalia_psi_d
 for i in num:
     i = i + i
     VAR = anomalias_p2[i] - anomalias_p2[i+1]
-    cmin = -1300000
-    cmax = 1300000
+    cmin = 13
+    cmax = 13
     ncont = 25
     clevs = np.linspace(cmin, cmax, ncont)
-    nombre_titulo = "Diferencia anomalia 2 Dia" + titulo[i]
+    nombre_titulo = "Diferencia anomalía 2 Día" + titulo[i]
     nombre_archivo = "dif_P2_dia" + archivo[i]                       #\m/
     fig = mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
-
