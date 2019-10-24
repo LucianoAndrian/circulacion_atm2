@@ -32,8 +32,8 @@ def mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo):
     ax.set_extent(L, crs=crs_latlon)
     
     #Graficamos
-    im=ax.contourf(lons, lats, VAR, clevs, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
-    ax.contour(lons, lats, VAR, levels = 0, colors = "w", xtend='both', transform=crs_latlon)
+    im=ax.contourf(lons, lats, VAR/100000, clevs, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
+    ax.contour(lons, lats, VAR/100000, levels = 0, colors = "w", xtend='both', transform=crs_latlon)
     #Agregamos barra de colores
     cb = plt.colorbar(im, fraction=0.052, pad=0.04, shrink=0.8, aspect=8)
     cb.ax.tick_params(labelsize=6)

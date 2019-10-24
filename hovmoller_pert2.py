@@ -25,9 +25,9 @@ def hovmoller2(psi_c, psi, lon, lat, estado_basico, perturbacion,nombre):
     dias = np.arange(1,11)
     
     plt.figure()
-    plt.contourf(lon[58:360],dias, anomalia_10dias[:,31,58:360], cmap = 'viridis') 
+    plt.contourf(lon[58:360],dias, anomalia_10dias[:,31,58:360]/100000, cmap = 'viridis') 
     plt.colorbar()
-    plt.contour(lon[58:360],dias, anomalia_10dias[:,31,58:360], levels = 0, colors = "w" )
+    plt.contour(lon[58:360],dias, anomalia_10dias[:,31,58:360]/100000, levels = 0, colors = "w" )
     plt.axvline(220, color = "r")
     plt.xlabel('longitud')
     plt.ylabel('Dias')
@@ -37,9 +37,9 @@ def hovmoller2(psi_c, psi, lon, lat, estado_basico, perturbacion,nombre):
     plt.savefig("Hovmoller_zonal_" + nombre, dpi = 200)
     
     plt.figure()
-    plt.contourf(lat[0:110], dias, anomalia_10dias[:,0:110,157], cmap = 'viridis') 
+    plt.contourf(lat[0:110], dias, anomalia_10dias[:,0:110,157]/100000, cmap = 'viridis') 
     plt.colorbar()
-    plt.contour(lat[0:110], dias, anomalia_10dias[:,0:110,157], levels = 0, colors = "w" )
+    plt.contour(lat[0:110], dias, anomalia_10dias[:,0:110,157]/100000, levels = 0, colors = "w" )
     plt.axvline(-46, color = "r")
     plt.xlabel('Latitud')
     plt.ylabel('Dias')
