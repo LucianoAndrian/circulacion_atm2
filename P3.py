@@ -12,21 +12,19 @@ import matplotlib.animation as animation
 import math
 import time 
 import os
-os.chdir('/Users/mini/Documents/Circulación/Atmósfera/P3/')  #Esto es para que se quede en el directorio que querés
+
+#os.chdir('/Users/mini/Documents/Circulación/Atmósfera/P3/')  #Esto es para que se quede en el directorio que querés
+
 import xarray as xr
 from netCDF4 import Dataset 
 import cartopy.feature
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import cartopy.crs as ccrs
 
-##
-## OJO! LEAN SUBIO NUEVAS FUNCIONES DerY.py Y DerX.py QUE FUNCIONAN EN 2D Y 3D
-## PERO LA FUNCION DerY TIRA UN ERROR. LE CORREGI ALGO Y LA LLAME DerY_L
-## CREO QUE ESTA CORREGIDO PERO NO ESTOY SEGURO. (DESPUES LE MANDO UN MAIL PREGUNTANDOLE)
-## (LA FUNCION DerY_L ESTA SUBIDA EN EL MISMO REPOSITORIO DE GITHUB)
 #################################
-from DerY_L import derivy   # ojo, la nueva funcion que subio Lean tira error. le modifique una cosa
-################################# nse si es el error, estoy casi seguro que si.
+# from DerY_L import derivy   #Solucionado
+################################# 
+from DerY import derivy
 from DerX import derivx     
 from numpy import empty
 # nuestras funciones
@@ -36,9 +34,9 @@ from mapa2 import mapa2
 from mapa3 import mapa3
 
 
-#dir = '/home/auri/Facultad/Materias/Circulacion/TP6/' # Luchi
+dir = '/home/auri/Facultad/Materias/Circulacion/TP6/' # Luchi
 script_dir = os.path.dirname(dir)
-dir = '/Users/mini/Documents/Circulación/Atmósfera/P3/' # Mili
+#dir = '/Users/mini/Documents/Circulación/Atmósfera/P3/' # Mili
 
 #%%
 
@@ -62,7 +60,6 @@ eta = (h - H)/9.8  #superficie libre
 
 u_b = Estado_basico(u, lat, lon)
 v_b = Estado_basico(v, lat, lon)
-h_b = Estado_basico(h, lat, lon)
 eta_b = Estado_basico(eta, lat, lon)
 
 #Calculamos las perturbaciones
@@ -72,16 +69,17 @@ eta_e = eta - eta_b
 
 #%%
 # Energia cinetica
-Ec = (rho*H)/2*(u*2 + v*2)
-Ec_b = (rho*H)/2*(u_b*2 + v_b*2)
-Ec_e = (rho*H)/2*(u_e*2 + v_e*2)
+Ec = (rho*H)/2*(u**2 + v**2)
+Ec_b = (rho*H)/2*(u_b**2 + v_b**2)
+Ec_e = (rho*H)/2*(u_e**2 + v_e**2)
 
 
 # Energia potencial
-Ep = (rho*g)/2*(eta*2+H*2) # Energia potencial instantanea
-Ep_b = (rho*g)/2*(eta_b*2+H*2) # Energia potencial del flujo medio
+Ep = (rho*g)/2*(eta**2+H**2) # Energia potencial instantanea
+Ep_b = (rho*g)/2*(eta_b**2+H**2) # Energia potencial del flujo medio
 Ep_e = (rho*g)/2*(eta_e**2) # Energia potencial de las perturbaciones
 
+# Graficos Ec y Ep del flujo medio
 #Defino parámetros para poder graficar
 LONMIN= 0
 LONMAX= 359
@@ -91,20 +89,39 @@ L = [LONMIN, LONMAX, LATMIN, LATMAX]
 cmap = 'Spectral_r'
 
 VAR1 = Ec_b
-VAR2 = Ep_b
+VAR2 = Ep_b/10000
+VAR3 = eta_e[51,:,:] #anomalia de la sfc libre dia 2 de la perturbaciòn
 
 cmin1 = 0   #Límites de la E cinética
-cmax1 = 5
+cmax1 = 25
 ncont = 25
 
-cmin2 = 3.92378  #Límites de E potencial 
-cmax2 = 3.97
+cmin2 = 7.8398  #Límites de E potencial 
+cmax2 = 7.8412  # esto es un mierda jajaja --> la escala cambio a 1e9 porque se habian borrado los ** en el calculo de la energia
 
 nombre_titulo = "Comparación EC y EP"
 nombre_archivo= "Ec_Ep_EB1P1"
 
-fig= mapa3(cmin1,cmax1,cmin2,cmax2,ncont,lat,lon,L,VAR1,VAR2,cmap,nombre_titulo,nombre_archivo)
+fig= mapa3(cmin1,cmax1,cmin2,cmax2,ncont,lat,lon,L,VAR1,VAR2,VAR3,cmap,nombre_titulo,nombre_archivo)
 
+# Graficos Ec y Ep de las perturbaciones dia 2 de la perturbaciòn
+
+VAR1 = Ec_e[51,:,:]
+VAR2 = Ep_e[51,:,:]
+VAR3 = eta_e[51,:,:]
+
+cmap = 'YlOrRd' # cambiando los colores porque queda horrible sino
+ 
+cmin1 = 0
+cmax1 = 3.5
+ncont = 25
+
+cmin2 = 0
+cmax2 = 0.04
+
+nombre_titulo = ""
+nombre_archivo = "Ec_Ep_EB1P1_E"
+fig= mapa3(cmin1,cmax1,cmin2,cmax2,ncont,lat,lon,L,VAR1,VAR2,VAR3,cmap,nombre_titulo,nombre_archivo)
 #%%
 # para el ej2
 # derivx requiere una escala en x que depende de la latitud 
@@ -176,4 +193,84 @@ U, V = np.meshgrid(Vgx_e[51,1,:], Vgy_e[51,:,1])
 #plt.quiver(lat_m, lon_m, U, V, color ="red",headwidth=1, headlength=4)
 #plt.savefig("prueba.jpg")
 #mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
-  
+
+
+# Grafico adveccion Ec_e y Ec_e dias 1234
+# ver el * de la practica con respecto a graficar la adv en m2s-2dia-1 ..que???
+
+from mapa4 import mapa4
+
+lat2=lat[20:67]
+lon2=lon[128:214]
+LONMIN= 180
+LONMAX= 300
+LATMIN= -60
+LATMAX= 5
+L = [LONMIN, LONMAX, LATMIN, LATMAX]
+
+cmin = -1
+cmax = 1
+cmap = 'Spectral_r'
+dia = ("1", "2", "3", "4")
+
+for i in np.arange(0,4,1):
+    VAR1 = Adv[50+i, 20:67, 128:214]
+    VAR2 = Ec_e[50+i, 20:67, 128:214]/10000
+
+    nombre_titulo = "Advecciòn de Ke y Ke - Dia " + dia[i] 
+    nombre_archivo = "Adv_Ke_EB1P1_dia" + dia[i]
+    mapa4(cmin,cmax,ncont,lat2,lon2,L,VAR1,VAR2,cmap,nombre_titulo,nombre_archivo)
+
+# c baroclinica
+
+cmin = -2
+cmax = 2
+cmap = 'Spectral_r'
+dia = ("1", "2", "3", "4")
+
+for i in np.arange(0,4,1):
+    VAR1 = C_baroclinica[50+i, 20:67, 128:214]
+    VAR2 = Ec_e[50+i, 20:67, 128:214]/10000
+
+    nombre_titulo = "Conversiòn baroclìnica y Ke - Dia " + dia[i] 
+    nombre_archivo = "C_baroc_Ke_EB1P1_dia" + dia[i]
+    mapa4(cmin,cmax,ncont,lat2,lon2,L,VAR1,VAR2,cmap,nombre_titulo,nombre_archivo)
+    
+    
+# ACA va lo del flujo ageostrofico con vectores, mañana lo veo
+
+cmin = -1
+cmax = 1
+cmap = 'Spectral_r'
+dia = ("1", "2", "3", "4")
+
+for i in np.arange(0,4,1):
+    VAR1 = Disp[50+i, 20:67, 128:214]
+    VAR2 = Ec_e[50+i, 20:67, 128:214]/10000
+
+    nombre_titulo = "Dispersiòn de K y Ke - Dia " + dia[i] 
+    nombre_archivo = "Disp_Ke_EB1P1_dia" + dia[i]
+    mapa4(cmin,cmax,ncont,lat2,lon2,L,VAR1,VAR2,cmap,nombre_titulo,nombre_archivo)
+    
+
+
+    
+# c barotropica
+    
+
+cmin = -1
+cmax = 1
+cmap = 'Spectral_r'
+dia = ("1", "2", "3", "4")
+
+for i in np.arange(0,4,1):
+    VAR1 = C_barotropica[50+i, 20:67, 128:214]
+    VAR2 = Ec_e[50+i, 20:67, 128:214]/10000
+
+    nombre_titulo = "Conversiòn barotropica y Ke - Dia " + dia[i] 
+    nombre_archivo = "C_barot_Ke_EB1P1_dia" + dia[i]
+    mapa4(cmin,cmax,ncont,lat2,lon2,L,VAR1,VAR2,cmap,nombre_titulo,nombre_archivo)
+    
+
+
+
