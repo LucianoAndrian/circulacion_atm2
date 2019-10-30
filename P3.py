@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Oct 11 16:49:18 2019
-as
+
 @author:   auri
 """
 import numpy as np
