@@ -21,17 +21,18 @@ import cartopy.feature
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import cartopy.crs as ccrs
 
-#################################
-# from DerY_L import derivy   #Solucionado
-################################# 
-from DerY import derivy
+from DerY import derivy # LA ULTIMA QUE SUBIO LEAN
 from DerX import derivx     
 from numpy import empty
+
+
 # nuestras funciones
-from mapa import mapa
 from Estado_basico import Estado_basico
+from mapa import mapa
 from mapa2 import mapa2
-from mapa3 import mapa3
+from mapa3 import mapa3 ## CON CAMBIOS
+from mapa4 import mapa4 ##NUEVA
+from mapa5 import mapa5 ##NUEVA
 
 
 dir = '/home/auri/Facultad/Materias/Circulacion/TP6/' # Luchi
@@ -79,6 +80,7 @@ Ep = (rho*g)/2*(eta**2+H**2) # Energia potencial instantanea
 Ep_b = (rho*g)/2*(eta_b**2+H**2) # Energia potencial del flujo medio
 Ep_e = (rho*g)/2*(eta_e**2) # Energia potencial de las perturbaciones
 
+
 # Graficos Ec y Ep del flujo medio
 #Defino parámetros para poder graficar
 LONMIN= 0
@@ -104,6 +106,7 @@ nombre_archivo= "Ec_Ep_EB1P1"
 
 fig= mapa3(cmin1,cmax1,cmin2,cmax2,ncont,lat,lon,L,VAR1,VAR2,VAR3,cmap,nombre_titulo,nombre_archivo)
 
+
 # Graficos Ec y Ep de las perturbaciones dia 2 de la perturbaciòn
 
 VAR1 = Ec_e[51,:,:]
@@ -123,6 +126,7 @@ nombre_titulo = ""
 nombre_archivo = "Ec_Ep_EB1P1_E"
 fig= mapa3(cmin1,cmax1,cmin2,cmax2,ncont,lat,lon,L,VAR1,VAR2,VAR3,cmap,nombre_titulo,nombre_archivo)
 #%%
+
 # para el ej2
 # derivx requiere una escala en x que depende de la latitud 
 R = 6370000
@@ -161,44 +165,34 @@ V_eta_v_ex = derivx(eta_e*v_e, dx, lat)
 
 Disp = -g*H*(V_eta_u_ey + V_eta_v_ex)
 
-# flujo ajestrofico (REVISAR TOODOO ESTO !!!!)
+# flujo ajestrofico
 
-omega = 7.27*10**-5
-lat_g = lat*np.pi/180 # regla de tres para pasar de grados a radianes.
-beta = omega*np.cos(lat_g)/R
-long_arco = R*lat_g
-
-
-# haciendo lo mismo que antes pero de forma matricial simplifica los proximos pasos
-
+omega = 7.27e-5
 lon_m, lat_m = np.meshgrid(lon, lat) 
 lat_g_m = lat_m*np.pi/180 # regla de tres para pasar de grados a radianes.
 
 
 # viento geostrofico
 
-Vgx = -1/(2*7.27e-05*np.cos(lat_g_m)/R)*derivy(h, dy)
-Vgy = 1/(2*7.27e-05*np.cos(lat_g_m)/R)*derivx(h, dx, lat)
-Vgx_b = Estado_basico(Vgx, lat, lon)
-Vgy_b = Estado_basico(Vgy, lat, lon)
+Vgx = -1/(2*omega*np.sin(lat_g_m))*derivy(h, dy)
+Ugy = 1/(2*omega*np.sin(lat_g_m))*derivx(h, dx, lat)
 
-Vgx_e = u - Vgx_b  
-Vgy_e = v - Vgy_b
+V_ag = u - Vgx 
+U_ag = v - Ugy
 
-# hay que ver como mierda graficar bien los vectores
- 
-U, V = np.meshgrid(Vgx_e[51,1,:], Vgy_e[51,:,1])
+# viento agesotrofico
 
-#plt.figure()
-#plt.quiver(lat_m, lon_m, U, V, color ="red",headwidth=1, headlength=4)
-#plt.savefig("prueba.jpg")
-#mapa(cmin,cmax,ncont,lat,lon,L,VAR,cmap,nombre_titulo,nombre_archivo)
+V_ag_b = Estado_basico(V_ag, lat, lon)
+U_ag_b = Estado_basico(U_ag, lat, lon)
 
+V_ag_anom = V_ag - V_ag_b
+U_ag_anom = U_ag - U_ag_b
+
+#%%
+## GRAFICOS ##
 
 # Grafico adveccion Ec_e y Ec_e dias 1234
-# ver el * de la practica con respecto a graficar la adv en m2s-2dia-1 ..que???
-
-from mapa4 import mapa4
+# ver el * de la practica con respecto a graficar la adv en m2s-2dia-1 ..que??? ### VER ESTO!!!!
 
 lat2=lat[20:67]
 lon2=lon[128:214]
@@ -219,7 +213,9 @@ for i in np.arange(0,4,1):
 
     nombre_titulo = "Advecciòn de Ke y Ke - Dia " + dia[i] 
     nombre_archivo = "Adv_Ke_EB1P1_dia" + dia[i]
+    
     mapa4(cmin,cmax,ncont,lat2,lon2,L,VAR1,VAR2,cmap,nombre_titulo,nombre_archivo)
+
 
 # c baroclinica
 
@@ -234,30 +230,35 @@ for i in np.arange(0,4,1):
 
     nombre_titulo = "Conversiòn baroclìnica y Ke - Dia " + dia[i] 
     nombre_archivo = "C_baroc_Ke_EB1P1_dia" + dia[i]
+    
     mapa4(cmin,cmax,ncont,lat2,lon2,L,VAR1,VAR2,cmap,nombre_titulo,nombre_archivo)
     
     
-# ACA va lo del flujo ageostrofico con vectores, mañana lo veo
+# Dispersion y flujo agesotrofico
 
-cmin = -1
-cmax = 1
+lat3=lat[20:61]   # NUEVAS LATITUDES PARA QUE GRAFIQUE LOS VECTORES CERCA DEL ECUADOR
+lon3=lon[128:214]
+
+cmin = -60
+cmax = 60
 cmap = 'Spectral_r'
 dia = ("1", "2", "3", "4")
 
 for i in np.arange(0,4,1):
-    VAR1 = Disp[50+i, 20:67, 128:214]
-    VAR2 = Ec_e[50+i, 20:67, 128:214]/10000
+    VAR1 = Disp[50+i, 20:61, 128:214]
+    VAR2 = Ec_e[50+i, 20:61, 128:214]/10000
+    
+    V =V_ag_anom[50+i, 20:61,128:214]
+    U = U_ag_anom[50+i, 20:61, 128:214]
 
     nombre_titulo = "Dispersiòn de K y Ke - Dia " + dia[i] 
     nombre_archivo = "Disp_Ke_EB1P1_dia" + dia[i]
-    mapa4(cmin,cmax,ncont,lat2,lon2,L,VAR1,VAR2,cmap,nombre_titulo,nombre_archivo)
     
-
-
+    mapa5(cmin,cmax,ncont,lat3,lon3,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre_archivo)
+    
     
 # c barotropica
     
-
 cmin = -1
 cmax = 1
 cmap = 'Spectral_r'
@@ -269,8 +270,6 @@ for i in np.arange(0,4,1):
 
     nombre_titulo = "Conversiòn barotropica y Ke - Dia " + dia[i] 
     nombre_archivo = "C_barot_Ke_EB1P1_dia" + dia[i]
+    
     mapa4(cmin,cmax,ncont,lat2,lon2,L,VAR1,VAR2,cmap,nombre_titulo,nombre_archivo)
     
-
-
-
