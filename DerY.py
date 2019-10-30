@@ -41,9 +41,9 @@ def derivy(array,dy):
     	while i<a:
     		j=0
     		while j<b:
-    			if j==0:
+    			if i==0:
     				dUy[i,j]=(array[i+1,j]-array[i,j])/dy
-    			elif j==a-1:
+    			elif i==a-1:
     				dUy[i,j]=(array[i,j]-array[i-1,j])/dy
     			else:
     				dUy[i,j]=(array[i+1,j]-array[i-1,j])/dy/2
