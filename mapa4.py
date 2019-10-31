@@ -37,11 +37,12 @@ def mapa4(cmin,cmax,ncont,lat,lon,L,VAR1,VAR2,cmap,nombre_titulo,nombre_archivo)
     
     #Graficamos
     im=ax.contourf(lons, lats, VAR1, clevs, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
-    anom = ax.contour(lons, lats, VAR2, xtend='both', transform=crs_latlon, linewidths=0.5)
-    ax.clabel(anom, inline=1, fontsize = 4)
+    anom = ax.contour(lons, lats, VAR2, colors = "black", transform=crs_latlon, linewidths=0.5)
+    ax.clabel(anom, inline=1, fontsize = 6)
     #Agregamos barra de colores
     cb = plt.colorbar(im, fraction=0.052, pad=0.04, shrink=0.8, aspect=8)
     cb.ax.tick_params(labelsize=6)
+ 
     #Características del mapa
     ax.add_feature(cartopy.feature.LAND, facecolor='#d9d9d9')
     ax.add_feature(cartopy.feature.COASTLINE)

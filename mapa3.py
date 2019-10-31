@@ -8,14 +8,17 @@ from matplotlib import pyplot as plt
 import cartopy.feature
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import cartopy.crs as ccrs
+import os
 
 #L = [LONMIN, LONMAX, LATMIN, LATMAX]
 #cmap = 'rainbow'
 #nombre_titulo = ''
 #nombre_archivo = ''
 
-def mapa3(cmin1,cmax1,cmin2,cmax2,ncont,lat,lon,L,VAR1,VAR2,VAR3,cmap,nombre_titulo,nombre_archivo):
-    
+def mapa3(cmin1,cmax1,cmin2,cmax2,ncont,lat,lon,L,VAR1,VAR2,VAR3,cmap,nombre_titulo1,nombre_titulo2,nombre_archivo):
+    #dir = '/home/auri/Facultad/Materias/Circulacion/TP6/' # Luchi
+    #script_dir = os.path.dirname(dir)
+    #results_dir = os.path.join(script_dir, 'salidas/')  
     #Pasamos las latitudes/longitudes del dataset a una reticula para graficar
     lons, lats = np.meshgrid(lon, lat)
     
@@ -98,10 +101,12 @@ def mapa3(cmin1,cmax1,cmin2,cmax2,ncont,lat,lon,L,VAR1,VAR2,VAR3,cmap,nombre_tit
     bx.xaxis.set_major_formatter(lon_formatter)
     bx.yaxis.set_major_formatter(lat_formatter)
     bx.tick_params(labelsize=6)
-    plt.tight_layout()
+    
     
     #Titulo
-    #plt.title(nombre_titulo, fontsize=6, y=2.2, x = -17) # con esto el titulo queda centrado 
-                                                          # pero al guardar lo corta mal al titulo
+    plt.title(nombre_titulo1,fontsize=6, y=2.15, x = -17) 
+    #plt.text( -26, 1.12,nombre_titulo2,fontsize=6)  
+    plt.suptitle(nombre_titulo2, y = 0.53, x = 0.48,fontsize=6)  
+    plt.tight_layout()                                                
     #Guardar figura
     plt.savefig(nombre_archivo + '.jpg')

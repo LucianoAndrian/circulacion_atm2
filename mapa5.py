@@ -18,12 +18,13 @@ import os
 #nombre_titulo = 'forzante'
 #nombre_archivo = 'forzante_tiempo_50_EB1'
 
-def mapa5(cmin,cmax,ncont,lat,lon,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre_archivo):
+def mapa5(cmin,cmax,ncont,lat,lat4,lon,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre_archivo):
     #dir = '/home/auri/Facultad/Materias/Circulacion/TP6/' # Luchi
     #script_dir = os.path.dirname(dir)
     #results_dir = os.path.join(script_dir, 'salidas/')  
     #Pasamos las latitudes/longitudes del dataset a una reticula para graficar
     lons, lats = np.meshgrid(lon, lat)
+    lons2, lats2 = np.meshgrid(lon, lat4)
     
     clevs = np.linspace(cmin, cmax, ncont)
     
@@ -37,9 +38,9 @@ def mapa5(cmin,cmax,ncont,lat,lon,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre_arch
    
     #Graficamos
     im=ax.contourf(lons, lats, VAR1, clevs, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
-    anom = ax.contour(lons, lats, VAR2, xtend='both', transform=crs_latlon, linewidths=0.5, colors = "black")
+    anom = ax.contour(lons, lats, VAR2, xtend='both', transform=crs_latlon, linewidths=0.5, colors = "black", alpha = 0.8)
     ax.clabel(anom, inline=1, fontsize = 5)
-    Q = plt.quiver(lons[::4,::4], lats[::4,::4], U[::4,::4], V[::4,::4],width = 0.002, pivot = "tail", scale = 1 / 0.05,
+    ax.quiver(lons2[::4,::4], lats2[::4,::4], U[::4,::4], V[::4,::4],width = 0.002, pivot = "tail", scale = 1 / 0.05,
                    transform = crs_latlon, color = "black")
     #plt.quiverkey(Q, 0.9, 0.9, 1, r'$1 \frac{m}{s}$', labelpos='E', coordinates='figure')    
     
@@ -52,7 +53,7 @@ def mapa5(cmin,cmax,ncont,lat,lon,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre_arch
     ax.add_feature(cartopy.feature.BORDERS, linestyle='-', alpha=.5)
     ax.gridlines(crs=crs_latlon, linewidth=0.3, linestyle='-')
     ax.set_xticks(np.arange(180, 300, 45), crs=crs_latlon)
-    ax.set_yticks(np.arange(-60, -5, 10), crs=crs_latlon)
+    ax.set_yticks(np.arange(-60, -10, 10 ), crs=crs_latlon)
     lon_formatter = LongitudeFormatter(zero_direction_label=True)
     lat_formatter = LatitudeFormatter()
     ax.xaxis.set_major_formatter(lon_formatter)
