@@ -19,9 +19,9 @@ import os
 #nombre_archivo = 'forzante_tiempo_50_EB1'
 
 def mapa5(cmin,cmax,ncont,lat,lat4,lon,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre_archivo):
-    #dir = '/home/auri/Facultad/Materias/Circulacion/TP6/' # Luchi
-    #script_dir = os.path.dirname(dir)
-    #results_dir = os.path.join(script_dir, 'salidas/')  
+    dir = '/home/auri/Facultad/Materias/Circulacion/TP6/' # Luchi
+    script_dir = os.path.dirname(dir)
+    results_dir = os.path.join(script_dir, 'salidas/')  
     #Pasamos las latitudes/longitudes del dataset a una reticula para graficar
     lons, lats = np.meshgrid(lon, lat)
     lons2, lats2 = np.meshgrid(lon, lat4)
@@ -40,7 +40,7 @@ def mapa5(cmin,cmax,ncont,lat,lat4,lon,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre
     im=ax.contourf(lons, lats, VAR1, clevs, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
     anom = ax.contour(lons, lats, VAR2, xtend='both', transform=crs_latlon, linewidths=0.5, colors = "black", alpha = 0.8)
     ax.clabel(anom, inline=1, fontsize = 5)
-    ax.quiver(lons2[::3,::3], lats2[::3,::3], U[::3,::3], V[::3,::3],width = 0.002, pivot = "tail", scale = 1 / 0.05,
+    ax.quiver(lons2[::2,::2], lats2[::2,::2], U[::2,::2], V[::2,::2],width = 0.0015, pivot = "tail", scale = 1 / 0.025,
                    transform = crs_latlon, color = "black")
     #plt.quiverkey(Q, 0.9, 0.9, 1, r'$1 \frac{m}{s}$', labelpos='E', coordinates='figure')    
     
@@ -66,5 +66,5 @@ def mapa5(cmin,cmax,ncont,lat,lat4,lon,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre
     plt.title(nombre_titulo, fontsize=6, y=0.98, loc="center")
     
     #Guardar figura
-    plt.savefig(nombre_archivo + '.jpg')
+    plt.savefig(results_dir + nombre_archivo + '.jpg')
     plt.close()

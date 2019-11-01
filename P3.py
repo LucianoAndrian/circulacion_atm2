@@ -282,8 +282,8 @@ for i in np.arange(0,4,1):
     VAR2 = -psi_e[50+i, 20:70, 128:214]/10e4
 
     
-    V = V_ag_anom[50+i, 20:56,128:214]
-    U = U_ag_anom[50+i, 20:56, 128:214]
+    V = V_ag[50+i, 20:56,128:214]
+    U = U_ag[50+i, 20:56, 128:214]
 
     nombre_titulo = "Dispersión de K y -$\Psi$ - Dia " + dia[i] + " Estado básico 1"
     nombre_archivo = "Disp_psi_EB1P1_dia" + dia[i]
@@ -451,6 +451,9 @@ Vgy = 1/(2*omega*np.sin(lat_g_m))*derivx(h, dx, lat)
 
 U_ag = u - Ugx 
 V_ag = v - Vgy
+
+
+
 
 # viento agesotrofico
 
