@@ -69,7 +69,18 @@ eta_b = Estado_basico(eta, lat, lon)
 #Calculamos las perturbaciones
 u_e = u - u_b           
 v_e = v - v_b           
-eta_e = eta - eta_b     
+eta_e = eta - eta_b   
+
+
+psi = dS['stream'].values  
+
+psi_b = Estado_basico(psi, lat, lon)
+
+
+
+psi_e = psi - psi_b
+
+
 
 #%%
 # Energia cinetica
@@ -168,7 +179,7 @@ C_baroclinica = g*H*eta_e*div
 V_eta_u_ey = derivy(eta_e*u_e,dy)
 V_eta_v_ex = derivx(eta_e*v_e, dx, lat)
 
-Disp = -g*H*(V_eta_u_ey + V_eta_v_ex)
+Disp = -g*H/g*(V_eta_u_ey + V_eta_v_ex)
 
 # flujo ajestrofico
 
@@ -179,11 +190,11 @@ lat_g_m = lat_m*np.pi/180 # regla de tres para pasar de grados a radianes.
 
 # viento geostrofico
 
-Vgx = -1/(2*omega*np.sin(lat_g_m))*derivy(h, dy)
-Ugy = 1/(2*omega*np.sin(lat_g_m))*derivx(h, dx, lat)
+Ugx = -1/(2*omega*np.sin(lat_g_m))*derivy(h, dy)
+Vgy = 1/(2*omega*np.sin(lat_g_m))*derivx(h, dx, lat)
 
-V_ag = u - Vgx 
-U_ag = v - Ugy
+U_ag = u - Ugx 
+V_ag = v - Vgy
 
 # viento agesotrofico
 
@@ -207,14 +218,15 @@ LATMIN= -60
 LATMAX= 5
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
 
-cmin = -4
-cmax = 4
+cmin = -1.5
+cmax = 1.5
 cmap = 'Spectral_r'
 dia = ("1", "2", "3", "4")
 
+
 for i in np.arange(0,4,1):
-    VAR1 = Adv[50+i, 20:67, 128:214]
-    VAR2 = Ec_e[50+i, 20:67, 128:214]/10000
+    VAR1 = Adv[50+i, 20:67, 128:214] - Adv[50+i-1, 20:67, 128:214] # asi es la anomalia con respecto al dia anterior (asi lo piden las unidades)
+    VAR2 = Ec_e[50+i, 20:67, 128:214]/10000 
 
     nombre_titulo = "Advección de Ke y Ke - Dia " + dia[i] + " Estado básico 1"
     nombre_archivo = "Adv_Ke_EB1P1_dia" + dia[i]
@@ -224,13 +236,13 @@ for i in np.arange(0,4,1):
 
 # c baroclinica
 
-cmin = -2
-cmax = 2
+#cmin = -2
+#cmax = 2
 cmap = 'Spectral_r'
 dia = ("1", "2", "3", "4")
 
 for i in np.arange(0,4,1):
-    VAR1 = C_baroclinica[50+i, 20:67, 128:214]
+    VAR1 = C_baroclinica[50+i, 20:67, 128:214] - C_baroclinica[50+i-1, 20:67, 128:214]
     VAR2 = Ec_e[50+i, 20:67, 128:214]/10000
 
     nombre_titulo = "Conversión baroclínica y Ke - Dia " + dia[i] + " Estado básico 1"
@@ -243,35 +255,51 @@ for i in np.arange(0,4,1):
 
 lat3=lat[20:70]   # NUEVAS LATITUDES PARA QUE GRAFIQUE LOS VECTORES CERCA DEL ECUADOR
 lon3=lon[128:214]
-lat4=lat[20:61]
+lat4=lat[20:56]
 
-cmin = -60
-cmax = 60
+#cmin = -60
+#cmax = 60
 cmap = 'Spectral_r'
 dia = ("1", "2", "3", "4")
-
+psi_e[50+i, 20:70, 128:214]
 for i in np.arange(0,4,1):
-    VAR1 = Disp[50+i, 20:70, 128:214]
+    VAR1 = Disp[50+i, 20:70, 128:214] - Disp[50+i-1, 20:70, 128:214]
     VAR2 = Ec_e[50+i, 20:70, 128:214]/10000
+
     
-    V =V_ag_anom[50+i, 20:61,128:214]
-    U = U_ag_anom[50+i, 20:61, 128:214]
+    V = V_ag_anom[50+i, 20:56,128:214]
+    U = U_ag_anom[50+i, 20:56, 128:214]
 
     nombre_titulo = "Dispersión de K y Ke - Dia " + dia[i] + " Estado básico 1"
     nombre_archivo = "Disp_Ke_EB1P1_dia" + dia[i]
     
     mapa5(cmin,cmax,ncont,lat3,lat4,lon3,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre_archivo)
     
+# disp con funcion corriente
+
+for i in np.arange(0,4,1):
+    VAR1 = Disp[50+i, 20:70, 128:214] - Disp[50+i-1, 20:70, 128:214]
+    VAR2 = -psi_e[50+i, 20:70, 128:214]/10e4
+
+    
+    V = V_ag_anom[50+i, 20:56,128:214]
+    U = U_ag_anom[50+i, 20:56, 128:214]
+
+    nombre_titulo = "Dispersión de K y -$\Psi$ - Dia " + dia[i] + " Estado básico 1"
+    nombre_archivo = "Disp_psi_EB1P1_dia" + dia[i]
+    
+    mapa5(cmin,cmax,ncont,lat3,lat4,lon3,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre_archivo)
+        
     
 # c barotropica
     
-cmin = -1
-cmax = 1
+#cmin = -1
+#cmax = 1
 cmap = 'Spectral_r'
 dia = ("1", "2", "3", "4")
 
 for i in np.arange(0,4,1):
-    VAR1 = C_barotropica[50+i, 20:67, 128:214]
+    VAR1 = C_barotropica[50+i, 20:67, 128:214]-C_barotropica[50+i-1, 20:67, 128:214]
     VAR2 = Ec_e[50+i, 20:67, 128:214]/10000
 
     nombre_titulo = "Conversión barotrópica y Ke - Dia " + dia[i] + " Estado básico 1"
@@ -407,7 +435,7 @@ C_baroclinica = g*H*eta_e*div
 V_eta_u_ey = derivy(eta_e*u_e,dy)
 V_eta_v_ex = derivx(eta_e*v_e, dx, lat)
 
-Disp = -g*H*(V_eta_u_ey + V_eta_v_ex)
+Disp = -g*H/g*(V_eta_u_ey + V_eta_v_ex)
 
 # flujo ajestrofico
 
@@ -418,11 +446,11 @@ lat_g_m = lat_m*np.pi/180 # regla de tres para pasar de grados a radianes.
 
 # viento geostrofico
 
-Vgx = -1/(2*omega*np.sin(lat_g_m))*derivy(h, dy)
-Ugy = 1/(2*omega*np.sin(lat_g_m))*derivx(h, dx, lat)
+Ugx = -1/(2*omega*np.sin(lat_g_m))*derivy(h, dy)
+Vgy = 1/(2*omega*np.sin(lat_g_m))*derivx(h, dx, lat)
 
-V_ag = u - Vgx 
-U_ag = v - Ugy
+U_ag = u - Ugx 
+V_ag = v - Vgy
 
 # viento agesotrofico
 
@@ -431,6 +459,9 @@ U_ag_b = Estado_basico(U_ag, lat, lon)
 
 V_ag_anom = V_ag - V_ag_b
 U_ag_anom = U_ag - U_ag_b
+
+
+
 
 #%%
 ## GRAFICOS ##
@@ -446,13 +477,13 @@ LATMIN= -60
 LATMAX= 5
 L = [LONMIN, LONMAX, LATMIN, LATMAX]
 
-cmin = -4
-cmax = 4
+cmin = -1.5
+cmax = 1.5
 cmap = 'Spectral_r'
 dia = ("1", "2", "3", "4")
 
 for i in np.arange(0,4,1):
-    VAR1 = Adv[50+i, 20:67, 128:214]
+    VAR1 = Adv[50+i, 20:67, 128:214] - Adv[50+i-1, 20:67, 128:214]
     VAR2 = Ec_e[50+i, 20:67, 128:214]/10000
 
     nombre_titulo = "Advección de Ke y Ke - Dia " + dia[i] + " Estado básico 2"
@@ -463,13 +494,13 @@ for i in np.arange(0,4,1):
 
 # c baroclinica
 
-cmin = -2
-cmax = 2
+#cmin = -2
+#cmax = 2
 cmap = 'Spectral_r'
 dia = ("1", "2", "3", "4")
 
 for i in np.arange(0,4,1):
-    VAR1 = C_baroclinica[50+i, 20:67, 128:214]
+    VAR1 = C_baroclinica[50+i, 20:67, 128:214] - C_baroclinica[50+i-1, 20:67, 128:214]
     VAR2 = Ec_e[50+i, 20:67, 128:214]/10000
 
     nombre_titulo = "Conversión baroclínica y Ke - Dia " + dia[i] + " Estado básico 2"
@@ -484,13 +515,13 @@ lat3=lat[20:70]   # NUEVAS LATITUDES PARA QUE GRAFIQUE LOS VECTORES CERCA DEL EC
 lon3=lon[128:214]
 lat4=lat[20:61]
 
-cmin = -60
-cmax = 60
+#cmin = -60
+#cmax = 60
 cmap = 'Spectral_r'
 dia = ("1", "2", "3", "4")
 
 for i in np.arange(0,4,1):
-    VAR1 = Disp[50+i, 20:70, 128:214]
+    VAR1 = Disp[50+i, 20:70, 128:214] -  Disp[50+i-1, 20:70, 128:214]
     VAR2 = Ec_e[50+i, 20:70, 128:214]/10000
     
     V = V_ag_anom[50+i, 20:61,128:214]
@@ -504,13 +535,13 @@ for i in np.arange(0,4,1):
     
 # c barotropica
     
-cmin = -1
-cmax = 1
+#cmin = -1
+#cmax = 1
 cmap = 'Spectral_r'
 dia = ("1", "2", "3", "4")
 
 for i in np.arange(0,4,1):
-    VAR1 = C_barotropica[50+i, 20:67, 128:214]
+    VAR1 = C_barotropica[50+i, 20:67, 128:214] - C_barotropica[50+i-1, 20:67, 128:214]
     VAR2 = Ec_e[50+i, 20:67, 128:214]/10000
 
     nombre_titulo = "Conversión barotrópica y Ke - Dia " + dia[i] + " Estado básico 2"
