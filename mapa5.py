@@ -40,7 +40,7 @@ def mapa5(cmin,cmax,ncont,lat,lat4,lon,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre
     im=ax.contourf(lons, lats, VAR1, clevs, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
     anom = ax.contour(lons, lats, VAR2, xtend='both', transform=crs_latlon, linewidths=0.5, colors = "black", alpha = 0.8)
     ax.clabel(anom, inline=1, fontsize = 5)
-    ax.quiver(lons2[::4,::4], lats2[::4,::4], U[::4,::4], V[::4,::4],width = 0.002, pivot = "tail", scale = 1 / 0.05,
+    ax.quiver(lons2[::3,::3], lats2[::3,::3], U[::3,::3], V[::3,::3],width = 0.002, pivot = "tail", scale = 1 / 0.05,
                    transform = crs_latlon, color = "black")
     #plt.quiverkey(Q, 0.9, 0.9, 1, r'$1 \frac{m}{s}$', labelpos='E', coordinates='figure')    
     
@@ -53,7 +53,7 @@ def mapa5(cmin,cmax,ncont,lat,lat4,lon,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre
     ax.add_feature(cartopy.feature.BORDERS, linestyle='-', alpha=.5)
     ax.gridlines(crs=crs_latlon, linewidth=0.3, linestyle='-')
     ax.set_xticks(np.arange(180, 300, 45), crs=crs_latlon)
-    ax.set_yticks(np.arange(-60, -10, 10 ), crs=crs_latlon)
+    ax.set_yticks(np.arange(-60, 10, 10 ), crs=crs_latlon)
     lon_formatter = LongitudeFormatter(zero_direction_label=True)
     lat_formatter = LatitudeFormatter()
     ax.xaxis.set_major_formatter(lon_formatter)
