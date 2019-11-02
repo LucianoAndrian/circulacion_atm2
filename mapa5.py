@@ -40,7 +40,7 @@ def mapa5(cmin,cmax,ncont,lat,lat4,lon,L,VAR1,VAR2,U,V,cmap,nombre_titulo,nombre
     im=ax.contourf(lons, lats, VAR1, clevs, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
     anom = ax.contour(lons, lats, VAR2, xtend='both', transform=crs_latlon, linewidths=0.5, colors = "black", alpha = 0.8)
     ax.clabel(anom, inline=1, fontsize = 5)
-    ax.quiver(lons2[::2,::2], lats2[::2,::2], U[::2,::2], V[::2,::2],width = 0.0015, pivot = "tail", scale = 1 / 0.025,
+    ax.quiver(lons2[::2,::2], lats2[::2,::2], U[::2,::2], V[::2,::2],width = 0.0015, pivot = "tail", scale = 1 / 0.0025,
                    transform = crs_latlon, color = "black")
     #plt.quiverkey(Q, 0.9, 0.9, 1, r'$1 \frac{m}{s}$', labelpos='E', coordinates='figure')    
     
