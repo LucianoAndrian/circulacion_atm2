@@ -39,12 +39,12 @@ def mapa3(cmin1,cmax1,cmin2,cmax2,ncont,lat,lon,L,VAR1,VAR2,VAR3,cmap,nombre_tit
     
     
     #Graficamos
-    im1=ax.contourf(lons, lats, VAR1/100000, clevs1, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
-    ax.contour(lons, lats, VAR1/100000, levels = 0, colors = "w", xtend='both', transform=crs_latlon)
+    im1=ax.contourf(lons, lats, VAR1, clevs1, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
+    ax.contour(lons, lats, VAR1, levels = 0, colors = "w", xtend='both', transform=crs_latlon)
 
   
-    im2=bx.contourf(lons, lats, VAR2/100000, clevs2, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
-    bx.contour(lons, lats, VAR2/100000, levels = 0, colors = "w", xtend='both', transform=crs_latlon)
+    im2=bx.contourf(lons, lats, VAR2, clevs2, cmap=plt.get_cmap(cmap), extend='both', transform=crs_latlon)
+    bx.contour(lons, lats, VAR2, levels = 0, colors = "w", xtend='both', transform=crs_latlon)
 
     
     # Defino los ejes donde van a estar las colorbar
@@ -55,11 +55,11 @@ def mapa3(cmin1,cmax1,cmin2,cmax2,ncont,lat,lon,L,VAR1,VAR2,VAR3,cmap,nombre_tit
     #Agregamos las barra de colores
     cb1 = plt.colorbar(im1, fraction=0.052, pad=0.04, shrink=0.7, aspect=9,  cax = cbaxes1)
     cb1.ax.tick_params(labelsize=5.8)
-    cb1.set_label('$x10^{5}$', labelpad = -22, y=1.08, rotation=0,fontsize=5.8)
+    cb1.set_label('$x10^{4}$', labelpad = -22, y=1.08, rotation=0,fontsize=5.8)
     
     cb2 = plt.colorbar(im2, fraction=0.052, pad=0.04, shrink=0.7, aspect=9,  cax = cbaxes2)   #TIENEN QUE ESTAR EN DIF LUGARES
     cb2.ax.tick_params(labelsize=5.8)
-    cb2.set_label('$x10^{9}$', labelpad = -30, y=1.08, rotation=0,fontsize=5.8)
+    cb2.set_label('$x10^{4}$', labelpad = -30, y=1.08, rotation=0,fontsize=5.8)
     
    
     # agrega las lineas de VAR3. (van despues de las barras de colores, para que tengan color aparte)
